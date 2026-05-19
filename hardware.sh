@@ -1,5 +1,5 @@
 #!/bin/bash
-script_version="v2026-03-05"
+script_version="v2026-05-19"
 check_bash(){
 current_bash_version=$(bash --version|head -n 1|awk -F ' ' '{for (i=1; i<=NF; i++) if ($i ~ /^[0-9]+\.[0-9]+\.[0-9]+/) {print $i; exit}}'|cut -d . -f 1)
 if [ "$current_bash_version" = "0" ]||[ "$current_bash_version" = "1" ]||[ "$current_bash_version" = "2" ]||[ "$current_bash_version" = "3" ];then
@@ -1488,6 +1488,7 @@ local url score
 url="$(geekbench5 --cpu 2>&1|tee >(cat >&4)|grep -oE 'https://browser\.geekbench\.com/v5/cpu/[0-9]+'|head -n 1)" >/dev/null
 if [[ -n $url ]];then
 local tmpresu=""
+if [[ $mode_verbose -eq 1 ]];then
 local attempt
 for ((attempt=1; attempt<=5; attempt++));do
 tmpresu="$(curl -sL --max-time 10 -A "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" "$url")"
@@ -1500,6 +1501,11 @@ parse_geekbench_cpu_html "$tmpresu"
 local scores=($(echo "$tmpresu"|grep -o "<div class='score'>[0-9]\+</div>"|sed 's/[^0-9]//g'))
 local single_score="${scores[0]}"
 local multi_score="${scores[1]}"
+else
+tmpresu="$(curl -sL --max-time 10 "$url.csv")"
+single_score=$(echo "$tmpresu"|grep '^Single-Core,'|cut -d',' -f2)
+multi_score=$(echo "$tmpresu"|grep '^Multi-Core,'|cut -d',' -f2)
+fi
 cpuinfo[url]="$url"
 fi
 [[ -n $single_score ]]&&cpuinfo[geekbench_single]="$single_score"
@@ -1775,6 +1781,7 @@ local url score
 url="$(geekbench5 --compute 2>&1|tee >(cat >&4)|grep -oE 'https://browser\.geekbench\.com/v5/compute/[0-9]+'|head -n 1)" >/dev/null
 if [[ -n $url ]];then
 local tmpresu=""
+if [[ $mode_verbose -eq 1 ]];then
 local attempt
 for ((attempt=1; attempt<=5; attempt++));do
 tmpresu="$(curl -sL --max-time 10 -A "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" "$url")"
@@ -1786,6 +1793,12 @@ done
 parse_geekbench_gpu_html "$tmpresu"
 score="$(echo "$tmpresu"|grep -o "<div class='score'>[0-9]\+</div>"|sed 's/[^0-9]//g'|head -n 1)"
 score_type="$(echo "$tmpresu"|grep -o "<div class='note'>[^<]*</div>"|head -n 1|sed -E "s@<div class='note'>([^[:space:]]+).*@\1@")"
+else
+tmpresu="$(curl -sL --max-time 10 "$url.csv")"
+local score_line=$(echo "$tmpresu"|grep -E '^(OpenCL|CUDA|Metal|Vulkan),')
+score_type=$(echo "$score_line"|cut -d',' -f1)
+score=$(echo "$score_line"|cut -d',' -f2)
+fi
 gpuinfo[url]="$url"
 fi
 [[ -n $score ]]&&gpuinfo[geekbench]="$score"
