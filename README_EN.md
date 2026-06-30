@@ -151,8 +151,7 @@ docker run --rm -it --privileged xykt/hardwarequality & docker rmi xykt/hardware
 
 | Sponsor | Logo | Link | 
 | - | - | - |  
-| LisaHost</br>丽萨主机 | ![lisa_logo](https://raw.githubusercontent.com/xykt/HardwareQuality/main/res/sponsor/logo_lisa.png) | [https://lisahost.com](https://lisahost.com)|
-| VIRCS</br>威尔克斯 | ![vircs_logo](https://raw.githubusercontent.com/xykt/HardwareQuality/main/res/sponsor/logo_vircs.png) | [https://vircs.com](https://www.vircs.com/promotion?code=6)|  
+| LisaHost</br>丽萨主机 | ![lisa_logo](https://raw.githubusercontent.com/xykt/HardwareQuality/main/res/sponsor/logo_lisa.png) | [https://lisahost.com](https://lisahost.com)|  
 
 ##### *E-Mail: sponsor@check.place Telegram Bot: https://t.me/xythebot*
 **Only accepting merchants with long-term stable operations and good reputation*
