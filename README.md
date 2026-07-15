@@ -162,7 +162,7 @@ docker run --rm -it --privileged xykt/hardwarequality & docker rmi xykt/hardware
 
 **Stars History:**
 
-![Stargazers over time](https://starchart.cc/xykt/HardwareQuality.svg?background=%23FFFFFF&axis=%23333333&line=%2377ff77)
+![Stargazers over time](https://star.xykt.de/xykt/HardwareQuality.svg?width=1024&height=400&maxRequestPages=20&xTicks=9&yTicks=6&showTitle=false&samplePointRadius=4&lineColor=darkred&samplePointColor=darkred&fillColor=darkred)
 
 **Daily Runs History:**
 
